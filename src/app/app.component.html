@@ -121,17 +121,18 @@
       </div>
       <img src="./assets/img/order_image.png" alt="order" class="order-img">
       <div class="order-form-rows" [formGroup]="form">
-        <div class="order-form-input">
+        <div class="order-form-input"
+             [class]="{'error': form.get('order')?.invalid && (form.get('order')?.dirty || form.get('order')?.touched)}"
+        >
           <label>
             <input type="text" placeholder="Выберите товар в списке" id="burger" formControlName="order" readonly>
           </label>
         </div>
         <div class="order-form-input"
-             [class]="{'error': form.get('order')?.invalid && (form.get('order')?.dirty || form.get('order')?.touched)}"
+             [class]="{'error': form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)}"
         >
           <label>
             <input type="text" placeholder="Ваше имя" id="name" formControlName="name"
-                   [class]="{'error': form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)}"
             >
           </label>
         </div>
