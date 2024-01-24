@@ -38,7 +38,7 @@
           </button>
         </div>
       </div>
-      <img src="./assets/img/main_burger.png" alt="our awesome burger" class="main-img">
+      <img src="./assets/img/main_burger.png" alt="our awesome burger" class="main-img" [ngStyle]="mainImageStyle">
     </div>
   </section>
 </section>
@@ -119,7 +119,7 @@
       <div class="order-form-title">
         Заполните все данные и наш менеджер свяжется с вами для подтверждения заказа
       </div>
-      <img src="./assets/img/order_image.png" alt="order" class="order-img">
+      <img src="./assets/img/order_image.png" alt="order" class="order-img" [ngStyle]="orderImageStyle">
       <div class="order-form-rows" [formGroup]="form">
         <div class="order-form-input"
              [class]="{'error': form.get('order')?.invalid && (form.get('order')?.dirty || form.get('order')?.touched)}"
@@ -162,3 +162,7 @@
 
   </div>
 </footer>
+
+<div class="loader" [class.showed]="loaderShowed" *ngIf="loader">
+  <lottie-player src="./assets/burger.json" style="background: transparent;" speed="1.5" autoplay></lottie-player>
+</div>
