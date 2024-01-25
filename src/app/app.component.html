@@ -33,7 +33,7 @@
           Готовим для вас лучшие бургеры в городе из отборной мраморной говядины.
         </p>
         <div class="mail-action">
-          <button class="button watch-menu-btn" id="menu-button" (click)="scrollTo(products)">
+          <button class="button watch-menu-btn" id="menu-button" (click)="scrollTo(products, order)">
             Смотреть Меню
           </button>
         </div>
@@ -76,7 +76,7 @@
   </div>
 </section>
 
-<section class="product" id="menu" #products>
+<section class="product" id="menu" #products #productsSection>
   <div class="container">
     <div class="product-title common-title">
       выберите свой бургер
@@ -98,7 +98,7 @@
             <div class="product-item-weight">{{product.grams}} gr</div>
           </div>
           <div class="product-order-button">
-            <button class="button order-button" (click)="scrollTo(order, product)">
+            <button class="button order-button" (click)="addBurgerToOrder(product)">
               <span>Заказать</span>
               <img src="./assets/img/card.svg" alt="order" class="order-icon">
             </button>
@@ -125,7 +125,7 @@
              [class]="{'error': form.get('order')?.invalid && (form.get('order')?.dirty || form.get('order')?.touched)}"
         >
           <label>
-            <input type="text" placeholder="Выберите товар в списке" id="burger" formControlName="order" readonly>
+            <input type="text" placeholder="Выберите товар в списке" id="burger" formControlName="order" readonly (click)="scrollToProducts()">
           </label>
         </div>
         <div class="order-form-input"
@@ -143,7 +143,7 @@
             <input type="tel" placeholder="Ваш телефон" id="phone" formControlName="phone">
           </label>
         </div>
-        <button class="button" id="order-submit" (click)="confirmOrder()" [disabled]="!form.valid">
+        <button class="button" id="order-submit" [disabled]="!form.valid">
           <span>Оформить заказ</span>
         </button>
       </div>

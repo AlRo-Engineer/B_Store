@@ -1,6 +1,6 @@
-import {Component, HostListener} from '@angular/core';
-import {FormBuilder, Validators} from "@angular/forms";
-import {AppService} from "./app.service";
+import { Component, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { FormBuilder, Validators } from "@angular/forms";
+import { AppService } from "./app.service";
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,14 @@ export class AppComponent {
 
   orderImageStyle: any;
   mainImageStyle: any;
+
+  selectedItems: string[] = [];
+
+  @ViewChild('productsSection') productsSection!: ElementRef;
+
+  scrollToProducts(): void {
+    this.productsSection.nativeElement.scrollIntoView({ behavior: 'smooth' });
+  }
 
   form = this.fb.group({
     order: ['', Validators.required],
@@ -42,29 +50,32 @@ export class AppComponent {
     this.appService.getData().subscribe(data => this.productsData = data);
   }
 
-  scrollTo(target
-             :
-             HTMLElement, burger ?: any
-  ) {
+  scrollTo(target: HTMLElement, burger ?: any) {
     target.scrollIntoView({behavior: 'smooth'});
     if (burger) {
       this.form.patchValue({order: burger.title + ' (' + burger.price + ' ' + this.currency + ')'});
     }
   }
+  onInputClick() {
+    this.scrollTo(this.productsSection.nativeElement);
+  }
 
-  confirmOrder() {
+  addBurgerToOrder(burger: any): void {
+    this.selectedItems.push(burger.title + ' (' + burger.price + ' ' + this.currency + ')');
+    this.form.patchValue({ order: this.selectedItems.join(', ') });
+  }
+  confirmOrder(): void {
     if (this.form.valid) {
-      this.appService.sendOrder(this.form.value).subscribe(
-        {
-          next: (response: any) => {
-            alert(response.message);
-            this.form.reset()
-          },
-          error: (response) => {
-            alert(response.error.message);
-          }
+      this.appService.sendOrder(this.form.value).subscribe({
+        next: (response: any) => {
+          alert(response.message);
+          this.selectedItems = []; // Очищаем массив выбранных элементов
+          this.form.reset(); // Очищаем форму
+        },
+        error: (response) => {
+          alert(response.error.message);
         }
-      );
+      });
     }
   }
 
